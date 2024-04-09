@@ -1,4 +1,4 @@
-package edu.pnu;
+package world_practice;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class practice01_3 {
+public class Practice01_3 {
 
 	public static void main(String[] args) {
 		Connection con = null;

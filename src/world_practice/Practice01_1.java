@@ -1,4 +1,4 @@
-package edu.pnu;
+package world_practice;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,41 +7,49 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-public class practice02 {
-
+public class Practice01_1 {
+	
+	// world의 city table 가져오기
 	public static void main(String[] args) {
 		Connection con = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
 		try {
-			// 드라이버 로드
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			// 데이터베이스 서버 연결
+			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://localhost:3306/world";
 			String user = "scott";
 			String password = "tiger";
+			
+			Class.forName(driver);
 			con = DriverManager.getConnection(url, user, password);
 			
-			// sql문 생성 및 실행
 			st = con.createStatement();
-			rs = st.executeQuery("select countrycode, name, population from city where countrycode = 'KOR' order by population DESC limit 10");
+			rs = st.executeQuery("select * from city");
 			
-			// sql 결과 정보
+			// queyresult의 정보를 가져오기
 			ResultSetMetaData meta = rs.getMetaData();
 			int count = meta.getColumnCount();
+			int width = 0;
 			
-			// 결과 출력
 			while(rs.next()) {
-				for(int i=1; i<=count; i++) {
-					System.out.print(rs.getString(i) + (i == count ? "\n" : ", "));
+				// 방법 1
+				for (int i=1; i<=count; i++) {
+					width = meta.getColumnDisplaySize(i);
+					width = width - rs.getString(i).length();
+					System.out.print(rs.getString(i) + (i==count ? "\n" : " ".repeat(width + 1)));
 				}
+
+				// 방법 2
+//				System.out.print(rs.getString("id")+","); 
+//				System.out.print(rs.getString("name")+",");
+//				System.out.print(rs.getString("countrycode")+",");
+//				System.out.print(rs.getString("district")+",");
+//				System.out.print(rs.getString("population")+"\n");
 			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("연결 실패: " + e.getMessage());
 		} finally {
 			// 자원 해제
 			try {				
@@ -55,7 +63,5 @@ public class practice02 {
 				e.printStackTrace();
 			}
 		}
-
 	}
-
 }
